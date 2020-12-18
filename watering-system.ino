@@ -5,6 +5,8 @@
 // Device tested PCF8574 - Use pullup resistors 3K3 ohms !
 // PCF8574 Default Freq 100 KHz 
 
+#include "credentials.h"
+
 #include <Wire.h>
 #include <Adafruit_BMP085.h>
 #include <PubSubClient.h>
@@ -35,8 +37,8 @@ int trigPin = 5;            // HC-SR04 trigger pin
 int echoPin = 4;            // HC-SR04 echo pin
 float duration, distance;
 
-const char* ssid = "Half-Life";
-const char* password = "funfunfun";
+const char* ssid = WIFI_SSID;
+const char* password = WIFI_PASSWD;
 
 const char* mqtt_server = "10.1.1.22";
 
@@ -204,7 +206,7 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect("ESP32Client","mqttUser","Lolglolg566")) {
+    if (client.connect("ESP32Client",MQTT_USER,MQTT_PASSWD)) {
       Serial.println("connected");
       // Subscribe
       client.subscribe("esp32/garden/valve1");
@@ -288,7 +290,7 @@ void loop() {
       char tanString[8];
       char tanLitresString[8];      
       int tankPer = 100 - (distance / 88 * 100);
-      int tankLitres = 100 - (distance / 88 * 1000);
+      int tankLitres = 1000 - (distance / 88 * 1000);
       //dtostrf(distance, 4, 0, tanString);
       dtostrf(tankPer, 4, 0, tanString);
       dtostrf(tankLitres, 4, 0, tanLitresString);

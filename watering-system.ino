@@ -289,8 +289,8 @@ void loop() {
       // Convert the value to a char array
       char tanString[8];
       char tanLitresString[8];      
-      int tankPer = 100 - (distance / 88 * 100);
-      int tankLitres = 1000 - (distance / 88 * 1000);
+      int tankPer = 100 - (distance / 111 * 100);
+      int tankLitres = 1000 - (distance / 111 * 1000);
       //dtostrf(distance, 4, 0, tanString);
       dtostrf(tankPer, 4, 0, tanString);
       dtostrf(tankLitres, 4, 0, tanLitresString);

@@ -1,4 +1,3 @@
-
 // ESP32 I2C Scanner
 // Based on code of Nick Gammon  http://www.gammon.com.au/forum/?id=10896
 // ESP32 DevKit - Arduino IDE 1.8.5
@@ -206,7 +205,7 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect("ESP32Client",MQTT_USER,MQTT_PASSWD)) {
+    if (client.connect("ESP32Client1",MQTT_USER,MQTT_PASSWD)) { //make the name unique on your mqtt server
       Serial.println("connected");
       // Subscribe
       client.subscribe("esp32/garden/valve1");
@@ -218,11 +217,6 @@ void reconnect() {
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
       // Wait 5 seconds before retrying
-
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
       delay(5000);
     }
   }
@@ -230,17 +224,16 @@ void reconnect() {
 
 
 
-
-
 void loop() {
-
   if (!client.connected()) {
     reconnect();
   }
   client.loop();
+  
   ArduinoOTA.handle();
+  
   long now = millis();
-  if (now - lastMsg > 30000) {
+  if (now - lastMsg > 600000) {
     lastMsg = now;
  
     // Temperature in Celsius
@@ -289,15 +282,13 @@ void loop() {
       // Convert the value to a char array
       char tanString[8];
       char tanLitresString[8];      
-      int tankPer = 100 - (distance / 111 * 100);
-      int tankLitres = 1000 - (distance / 111 * 1000);
+      int tankPer = 100 - (distance / 88 * 100);
+      int tankLitres = 1000 - (distance / 88 * 1000);
       //dtostrf(distance, 4, 0, tanString);
       dtostrf(tankPer, 4, 0, tanString);
       dtostrf(tankLitres, 4, 0, tanLitresString);
       client.publish("esp32/garden/tanklevel", tanString);
       client.publish("esp32/garden/tanklitres", tanLitresString);
-    }          
-}    
-
-
+    }    
+  }      
 }
